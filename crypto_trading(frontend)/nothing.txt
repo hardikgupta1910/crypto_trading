@@ -1,0 +1,259 @@
+//   <div className="relative min-h-screen overflow-hidden">
+
+  //   <div className="relative">
+  //     <div className="lg:flex">
+  //       <div className="lg:w-[50%] lg:border-r">
+  //         <div className="p-3 flex items-center gap-4 ">
+  //           <Button
+  //             onClick={() => handleCategory("all")}
+  //             className={`rounded-full transition-all duration-100
+  //                  hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //                    ${
+  //                      category === "all"
+  //                        ? "bg-white text-black "
+  //                        : "border  border-white/30 text-white"
+  //                    }`}
+  //           >
+  //             {" "}
+  //             All{" "}
+  //           </Button>
+
+  //           <Button
+  //             onClick={() => handleCategory("top50")}
+  //             className={`rounded-full transition-all duration-100
+  //                  hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //                    ${
+  //                      category === "top50"
+  //                        ? "bg-white text-black"
+  //                        : "border border-white/30 text-white"
+  //                    }`}
+  //           >
+  //             {" "}
+  //             Top50
+  //           </Button>
+
+  //           <Button
+  //             onClick={() => handleCategory("topGainer")}
+  //             className={`rounded-full transition-all duration-100
+  //                  hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //                   ${
+  //                     category === "topGainer"
+  //                       ? "bg-white text-black"
+  //                       : "border border-white/30 text-white"
+  //                   }`}
+  //           >
+  //             Top Gainers
+  //           </Button>
+
+  //           <Button
+  //             onClick={() => handleCategory("topDecliners")}
+  //             className={`rounded-full transition-all duration-100
+  //                    hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //                     ${
+  //                       category === "topDecliners"
+  //                         ? "bg-white text-black"
+  //                         : "border border-white/30 text-white"
+  //                     }`}
+  //           >
+  //             Top Decliners
+  //           </Button >
+  //         </div >
+  //         <AssetTable />
+  //       </div>
+
+  //       <div className="hidden lg:block lg:w-[50%] p-5 overflow-hidden">  {/*nwe*/}
+  //         <StockChart />
+  //         <div className="flex items-center gap-4 mt-4">
+  //           <div>
+  //             <Avatar>
+  //               <AvatarImage
+  //                 src={
+  //                   "https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400"
+  //                 }
+  //               />
+  //             </Avatar>
+  //           </div>
+
+  //           <div>
+  //             <div className="flex items-center gap-2">
+  //               <p>BTC</p>
+  //               <DotIcon className="text-gray-400" />
+  //               <p className="text-gray-400">BITCOIN</p>
+  //             </div>
+
+  //             <div className="flex items-end gap-2">
+  //               <p className="text-xl font-bold">107742</p>
+  //               <p className="text-green-600">
+  //                 <span>44310245979</span>
+  //                 <span>(+2.11283%)</span>
+  //               </p>
+  //             </div>
+  //           </div>
+          
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //       <section className="absolute bottom-5 right-5 z-40 flex flex-col justify-end items-end gap-2">
+
+  //         <div className="relative w-[10rem] cursor-pointer group">
+
+  //           <Button className="w-full h-[3rem] gap-2 items-center">
+  //             <MessageCircle/>
+  //             <span className="text-2xl">bot</span>
+  //           </Button>
+  //         </div>
+
+  //       </section>
+
+  //   </div>
+
+  // </div>
+
+
+
+  CHATGPT HOME
+
+// <div className="h-screen flex overflow-hidden">
+   
+  //   <div className="w-full lg:w-[50%] border-r overflow-y-auto">
+
+
+
+  //     <div className="p-3 flex items-center gap-4 sticky top-0 bg-background z-10">
+      
+  //       <Button
+  //         onClick={() => handleCategory("all")}
+  //         className={`rounded-full transition-all duration-100
+  //           hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //           ${category === "all"
+  //             ? "bg-white text-black"
+  //             : "border  border-white/30 text-white"
+  //           }`}
+  //       >
+  //         All
+  //       </Button>
+  //       <Button
+  //         onClick={() => handleCategory("top50")}
+  //         className={`rounded-full transition-all duration-100
+  //           hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //           ${category === "top50"
+  //             ? "bg-white text-black"
+  //             : "border border-white/30 text-white"
+  //           }`}
+  //       >
+  //         Top50
+  //       </Button>
+  //       <Button
+  //         onClick={() => handleCategory("topGainer")}
+  //         className={`rounded-full transition-all duration-100
+  //           hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //           ${category === "topGainer"
+  //             ? "bg-white text-black"
+  //             : "border border-white/30 text-white"
+  //           }`}
+  //       >
+  //         Top Gainers
+  //       </Button>
+  //       <Button
+  //         onClick={() => handleCategory("topDecliners")}
+  //         className={`rounded-full transition-all duration-100
+  //           hover:bg-white/20 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30
+  //           ${category === "topDecliners"
+  //             ? "bg-white text-black"
+  //             : "border border-white/30 text-white"
+  //           }`}
+  //       >
+  //         Top Decliners
+  //       </Button>
+  //     </div>
+
+  //     <AssetTable />
+  //   </div>
+
+            
+
+  //   {/* Right Fixed Panel */}
+  //   <div className="hidden lg:flex lg:flex-col lg:w-[50%] p-5 overflow-hidden sticky top-0 h-screen">
+  //     <StockChart />
+  //     <div className="flex items-center gap-4 mt-4">
+  //       <div>
+  //         <Avatar>
+  //           <AvatarImage
+  //             src="https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400"
+  //           />
+  //         </Avatar>
+  //       </div>
+  //       <div>
+  //         <div className="flex items-center gap-2">
+  //           <p>BTC</p>
+  //           <DotIcon className="text-gray-400" />
+  //           <p className="text-gray-400">BITCOIN</p>
+  //         </div>
+  //         <div className="flex items-end gap-2">
+  //           <p className="text-xl font-bold">107742</p>
+  //           <p className="text-green-600">
+  //             <span>44310245979</span>
+  //             <span>(+2.11283%)</span>
+  //           </p>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+
+  //   {/* Chatbot Section */}
+  //   <section className="absolute bottom-5 right-5 z-40 flex flex-col justify-end items-end gap-2">
+  //     <div className="relative w-[10rem] cursor-pointer group">
+  //       <Button className="w-full h-[3rem] gap-2 items-center bg-white text-gray-700">
+  //         <MessageCircle  
+  //         size={5}
+  //         className="fill-[#1e293b] -rotate-90 stroke-none group-hover:fill-[#1a1a1a] scale-150" />
+  //         <span className="text-2xl">CoinBot</span>
+  //       </Button>
+  //     </div>
+  //   </section>
+  
+  // </div>
+
+
+
+
+
+  // import { Avatar, AvatarImage } from "@/components/ui/avatar";
+// import { DotIcon } from "@radix-ui/react-icons";
+// import React from "react";
+
+// const StockDetails = () => {
+//   return (
+//     <div className="p-5 mt-5">
+//       <div className="flex justify-between">
+//         <div className="flex gap-5 items-start">
+//           <div>
+//             <Avatar className="">
+//               <AvatarImage
+//                 src={
+//                   "https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628"
+//                 }
+//               />
+//             </Avatar>
+//           </div>
+//           <div className="flex items-center gap-2">
+//             <p>BTC</p>
+//             <DotIcon className="text-gray-400" />
+//             <p className="text-gray-400">Bitcoin</p>
+//           </div>
+//           <div className="flex items-end gap-2">
+//             <p className="text-xl font-bold">$6554</p>
+//             <p className="text-red-600">
+//               <span>-121905665.54 </span>
+//               <span>(-0.3515%)</span>
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default StockDetails;
+
