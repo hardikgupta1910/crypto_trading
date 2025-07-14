@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,10 +9,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { BookmarkFilledIcon, BookmarkIcon } from "@radix-ui/react-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { getALLOrdersForUser } from "@/State/Order/Action";
 
 const Activity = () => {
+  const dispatch = useDispatch();
+  // const { orders } = useSelector((store) => store.order);
+  const orders = useSelector((store) => store.order.orders);
+
+  useEffect(() => {
+    dispatch(getALLOrdersForUser({ jwt: localStorage.getItem("jwt") }));
+  }, []);
+  console.log("orders on screen:", orders);
+
   return (
     <div className="max-h-[calc(100vh-90px)] overflow-y-auto p-5 lg:p-20">
       <h1 className="font-bold text-3xl pb-5">Activity</h1>
@@ -29,8 +38,8 @@ const Activity = () => {
             <TableHead className="text-right">Value</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {[1, 1, 1, 1, 1, 1, 1.1, 1, 1].map((item, index) => (
+        {/* <TableBody>
+          {order.orders.map((item, index) => (
             <TableRow
               key={index}
               className="transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30 "
@@ -41,17 +50,75 @@ const Activity = () => {
               </TableCell>
               <TableCell className="font-medium p-2">
                 <Avatar className="-z-50">
-                  <AvatarImage src="https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400" />
+                  <AvatarImage src={item.orderItem.buyPrice} />
                 </Avatar>
-                <span>Bitcoin</span>
+                <span>{item.orderItem.coin.name}</span>
               </TableCell>
-              <TableCell> 32994054149</TableCell>
-              <TableCell> 2141505608296</TableCell>
-              <TableCell> 2.16913%</TableCell>
-              <TableCell className="">$107742</TableCell>
-              <TableCell className="text-right">355</TableCell>
+              <TableCell>${item.orderItem.coin.current_price}</TableCell>
+              <TableCell> {item.orderItem.sellPrice}</TableCell>
+              <TableCell> {item.orderType}</TableCell>
+              <TableCell className="">
+                {item.orderItem.coin.total_volume}
+              </TableCell>
+              <TableCell className="text-right">{}</TableCell>
             </TableRow>
           ))}
+        </TableBody> */}
+        <TableBody>
+          {orders?.length > 0 ? (
+            orders.map((item, index) => {
+              const {
+                orderItem,
+                orderType,
+                timestamp, // assuming you have a timestamp
+              } = item;
+
+              const { coin, buyPrice, sellPrice } = orderItem;
+
+              // Format date & time
+              const dateObj = new Date(timestamp);
+              const date = dateObj.toLocaleDateString();
+              const time = dateObj.toLocaleTimeString();
+
+              return (
+                <TableRow
+                  key={index}
+                  className="transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30"
+                >
+                  <TableCell>
+                    <p>{date}</p>
+                    <p className="text-gray-400">{time}</p>
+                  </TableCell>
+
+                  <TableCell className="font-medium flex gap-2 items-center">
+                    <Avatar className="-z-50 w-6 h-6">
+                      {/* <AvatarImage src={coin.image} /> */}
+                      <AvatarImage src={coin?.image ?? "/fallback.png"} />
+                    </Avatar>
+                    <span>{coin.name}</span>
+                  </TableCell>
+
+                  <TableCell>${buyPrice}</TableCell>
+                  <TableCell>${sellPrice}</TableCell>
+                  <TableCell>{orderType}</TableCell>
+
+                  <TableCell className="">
+                    {coin.total_volume?.toLocaleString() ?? "N/A"}
+                  </TableCell>
+
+                  <TableCell className="text-right font-semibold">
+                    ${(sellPrice - buyPrice).toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <TableCell colSpan={7} className="text-center text-gray-400">
+                No orders found
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

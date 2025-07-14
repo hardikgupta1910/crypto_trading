@@ -29,16 +29,25 @@ public class AppConfig {
 	}
 	
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(Authorize->Authorize.requestMatchers("/api/auth/**").permitAll()
-						.requestMatchers("/api/**").authenticated()
-						.anyRequest().permitAll())
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.sessionManagement(management ->
+						management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(authorize ->
+						authorize
+								.requestMatchers("/api/auth/**").permitAll()
+								.requestMatchers("/api/orders/**").authenticated()
+								.requestMatchers("/api/payment/**").authenticated()
+								.requestMatchers("/api/payment-details").authenticated()
+								.requestMatchers("/api/**").authenticated() // catch-all for any other secured APIs
+								.anyRequest().permitAll()
+				)
 				.addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
-				.csrf(csrf->csrf.disable())
-				.cors(cors->cors.configurationSource(corsConfigurationSource()));  // CORS (Cross-Origin Resource Sharing)
-				return http.build();
+				.csrf(csrf -> csrf.disable())
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+		
+		return http.build();
 	}
+	
 	
 	// this will tell browser this domain/website (frontEnd) can access our domain.Any other web site then this try to access then give them cors config error instead of data
 	
@@ -61,7 +70,7 @@ public class AppConfig {
 		
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		configuration.setAllowedHeaders(Collections.singletonList("*"));
 		configuration.setExposedHeaders(Arrays.asList("Authorization"));
 		configuration.setAllowCredentials(true);

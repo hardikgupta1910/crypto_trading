@@ -26,8 +26,18 @@ function App() {
 
   useEffect(() => {
     //runs  everytime whem auth.jwt changes
-    dispatch(getUser(auth?.jwt || localStorage.getItem("jwt"))); //If auth is present then use it Otherwise get the JWT from localStorage.
-  }, [auth.jwt]);
+    const storedJwt = localStorage.getItem("jwt");
+    if (storedJwt && !auth.user) {
+      dispatch(getUser(storedJwt)); // Fetch user from token
+    }
+  }, []);
+
+  if (localStorage.getItem("jwt") && !auth.user) {
+    // Optional: Show loading spinner while fetching user
+    return <div className="text-white p-10">Loading...</div>;
+  }
+  //   dispatch(getUser(auth?.jwt || localStorage.getItem("jwt"))); //If auth is present then use it Otherwise get the JWT from localStorage.
+  // }, [auth.jwt]);
 
   return (
     <>

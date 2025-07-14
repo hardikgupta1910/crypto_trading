@@ -14,16 +14,18 @@ import {
   BookmarkIcon,
   DotIcon,
 } from "@radix-ui/react-icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TradingForm from "./TradingForm";
 import StockChart from "../Home/StockChart";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCoinDetails } from "@/State/Coin/Action";
-import { store } from "@/State/Store";
+import { addItemToWatchlist, getUserWatchlist } from "@/State/Watchlist/Action";
+import { existInWatchlist } from "@/utils/existInWatchlist";
 
 const StockDetails = () => {
-  const { coin } = useSelector((store) => store);
+  const { coin, watchlist } = useSelector((store) => store);
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -31,7 +33,26 @@ const StockDetails = () => {
     dispatch(
       fetchCoinDetails({ coinId: id, jwt: localStorage.getItem("jwt") })
     );
+    dispatch(getUserWatchlist(localStorage.getItem("jwt")));
   }, [id]);
+
+  const handleAddToWatchlist = () => {
+    const coinId = coin.coinDetails?.id;
+    const jwt = localStorage.getItem("jwt");
+
+    if (!coinId || !jwt) {
+      console.warn("Missing coinId or jwt. Aborting.");
+      return;
+    }
+
+    dispatch(addItemToWatchlist({ coinId, jwt }));
+  };
+
+  useEffect(() => {
+    if (coin.coinDetails) {
+      setIsInWatchlist(existInWatchlist(watchlist.items, coin.coinDetails));
+    }
+  }, [watchlist.items, coin.coinDetails]);
 
   return (
     <div className="p-5 mt-5">
@@ -47,7 +68,7 @@ const StockDetails = () => {
           <div className="flex flex-col gap-1">
             {/* First Row: BTC and Bitcoin */}
             <div className="flex items-center gap-2">
-              <p>BTC</p>
+              <p>{coin.coinDetails?.symbol.toUpperCase()}</p>
               <DotIcon className="text-gray-400" />
               <p className="text-gray-400">{coin.coinDetails?.name}</p>
             </div>
@@ -75,8 +96,21 @@ const StockDetails = () => {
           </div>
         </div>
         <div>
-          <Button className={"bg-white text-black m-3"}>
-            {true ? (
+          {/* <Button
+            onClick={handleAddToWatchlist}
+            className={"bg-white text-black m-3"}
+          >
+            {existInWatchlist(watchlist.items, coin.coinDetails) ? (
+              <BookmarkFilledIcon className="h-6 w-6" />
+            ) : (
+              <BookmarkIcon className="h-6 w-6" />
+            )}
+          </Button> */}
+          <Button
+            onClick={handleAddToWatchlist}
+            className="bg-white text-black m-3"
+          >
+            {isInWatchlist ? (
               <BookmarkFilledIcon className="h-6 w-6" />
             ) : (
               <BookmarkIcon className="h-6 w-6" />
@@ -84,13 +118,19 @@ const StockDetails = () => {
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button className={"bg-white text-black"} size="lg">
+              <Button className="bg-white text-black" size="lg">
                 Trade
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent
+              aria-describedby="dialog-description"
+              className="backdrop-blur-sm bg-black/30"
+            >
               <DialogHeader>
-                <DialogTitle> How much do you want to spend?</DialogTitle>
+                <DialogTitle>How much do you want to spend?</DialogTitle>
+                <DialogDescription id="dialog-description">
+                  Select the amount and confirm your crypto trade.
+                </DialogDescription>
               </DialogHeader>
               <TradingForm />
             </DialogContent>
@@ -98,7 +138,7 @@ const StockDetails = () => {
         </div>
       </div>
       <div className="mt-10">
-        <StockChart />
+        <StockChart coinId={id} />
       </div>
     </div>
   );

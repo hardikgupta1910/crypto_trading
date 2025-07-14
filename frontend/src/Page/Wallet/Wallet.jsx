@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import {
   Card,
   CardAction,
@@ -29,8 +30,57 @@ import TopUpForm from "./TopUpForm";
 import WithdrawalForm from "./WithdrawalForm";
 import TransferForm from "./TransferForm";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  depositeMoney,
+  getUserWallet,
+  getWalletTransactions,
+} from "@/State/Wallet/Action";
+// import { useLocation } from "react-router-dom";
+import { addTestWalletBalance } from "@/State/Wallet/Action";
+import { Button } from "@/components/ui/button";
 
 const Wallet = () => {
+  const dispatch = useDispatch();
+  const { wallet } = useSelector((store) => store);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    console.log("JWT at useEffect:", jwt);
+
+    dispatch(getUserWallet(jwt)).then((res) => {
+      console.log("Fetched wallet:", res);
+      const walletId = res?.id;
+
+      if (walletId) {
+        dispatch(getWalletTransactions({ jwt, walletId }));
+      }
+    });
+  }, []);
+  const handleFetchUserWallet = () => {
+    dispatch(getUserWallet(localStorage.getItem("jwt")));
+  };
+
+  const handleAddTestAmount = () => {
+    dispatch(
+      addTestWalletBalance({
+        jwt: localStorage.getItem("jwt"),
+        amount: 5000,
+      })
+    );
+
+    dispatch(getUserWallet(localStorage.getItem("jwt")));
+  };
+
+  const handleFetchWalletTransaction = () => {
+    dispatch(
+      getWalletTransactions({
+        jwt: localStorage.getItem("jwt"),
+        walletId: wallet.userWallet?.id,
+      })
+    );
+  };
+
   return (
     <div className="flex flex-col items-center max-h-[600px] overflow-y-auto ">
       <div className="pt-10 w-full lg:w-[60%]">
@@ -42,7 +92,9 @@ const Wallet = () => {
                 <div>
                   <CardTitle className="text-2xl">My Wallet</CardTitle>
                   <div className="flex items-center gap-2">
-                    <p className="text-gray-200 text-sm">#A475Ed</p>
+                    <p className="text-gray-200 text-sm">
+                      #{wallet.userWallet?.id}
+                    </p>
                     <CopyIcon
                       size={20}
                       className="cursor-pointer hover:text-slate-300"
@@ -51,14 +103,19 @@ const Wallet = () => {
                 </div>
               </div>
               <div>
-                <ReloadIcon className="w-6 h-6 cursor-pointer hover:text-gray-400" />
+                <ReloadIcon
+                  onClick={handleFetchUserWallet}
+                  className="w-6 h-6 cursor-pointer hover:text-gray-400"
+                />
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center">
               <DollarSign />
-              <span className="text-2xl font-semibold">2000</span>
+              <span className="text-2xl font-semibold">
+                {wallet.userWallet?.balance ?? "0"}
+              </span>
             </div>
 
             <div className="flex gap-7 mt-5">
@@ -78,6 +135,19 @@ const Wallet = () => {
                   </DialogHeader>
                   <TopUpForm />
                 </DialogContent>
+              </Dialog>
+
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div
+                    onClick={handleAddTestAmount}
+                    className="h-25 w-25 hover:text-gray-400 cursor-pointer
+      flex flex-col items-center justify-center rounded-md shadow-slate-800 shadow-md"
+                  >
+                    <DownloadIcon />
+                    <span className="text-sm mt-2">Add ₹5000 Test</span>
+                  </div>
+                </DialogTrigger>
               </Dialog>
 
               <Dialog>
@@ -125,32 +195,47 @@ const Wallet = () => {
             <h1 className="text-2xl font-semibold"> History</h1>
             <UpdateIcon className="h-5 w-5 cursor-pointer p-0 hover:text-gray-400" />
           </div>
+          <Button
+            onClick={() => {
+              const jwt = localStorage.getItem("jwt");
+              dispatch(
+                getWalletTransactions({ jwt, walletId: wallet.userWallet?.id })
+              );
+            }}
+            className="my-4"
+          >
+            🔄 Load Transactions
+          </Button>
+
           <div className=" space-y-3 pr-2">
-            {[1, 1, 1, 1, 1, 1, 1, 1].map((Item, i) => (
-              <div key={i}>
-                <Card className="px-5 py-3">
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-4">
-                      <Avatar>
-                        <AvatarFallback>
-                          <ShuffleIcon className="w-5 h-5" />
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col">
-                        <h1 className="font-medium leading-none">Buy Asset</h1>
-                        <p className="text-sm text-gray-500">2025-06-05</p>
+            {Array.isArray(wallet.transactions) &&
+              wallet.transactions.map((Item, i) => (
+                <div key={i}>
+                  <Card className="px-5 py-3">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-4">
+                        <Avatar onClick={handleFetchWalletTransaction}>
+                          <AvatarFallback>
+                            <ShuffleIcon className="w-5 h-5" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <h1 className="font-medium leading-none">
+                            {Item.type || Item.purpose}
+                          </h1>
+                          <p className="text-sm text-gray-500">{Item.date}</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-green-500 text-base font-semibold">
+                          {Item.amount}
+                        </p>
                       </div>
                     </div>
-
-                    <div>
-                      <p className="text-green-500 text-base font-semibold">
-                        9999
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            ))}
+                  </Card>
+                </div>
+              ))}
           </div>
         </div>
       </div>

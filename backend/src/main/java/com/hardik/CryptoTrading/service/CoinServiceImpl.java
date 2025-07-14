@@ -16,6 +16,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import java.util.List;
 import java.util.Optional;
+import java.util.List;
+import java.util.Optional;
+import java.util.Map;           // ✅ Required for Map
+import java.util.HashMap;      // ✅ Required for new HashMap<>()
+import java.util.ArrayList;
 
 @Service
 public class CoinServiceImpl implements CoinService{
@@ -51,26 +56,68 @@ public class CoinServiceImpl implements CoinService{
 		
 	}
 	
+//	@Override
+//	public String getMarketChart(String coinId, int days) throws Exception {
+//		String url="https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency=usd&days="+days;
+//
+//		RestTemplate restTemplate=new RestTemplate();
+//
+//		try{
+//			HttpHeaders headers=new HttpHeaders();
+//
+//			HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
+//
+//			ResponseEntity<String> response= restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
+//
+//			return response.getBody();
+//
+//		} catch (HttpClientErrorException | HttpServerErrorException e) {
+//			throw new Exception(e.getMessage());
+//		}
+//
+//	}
+	
 	@Override
-	public String getMarketChart(String coinId, int days) throws Exception {
-		String url="https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency=usd&days="+days;
+	public List<Map<String, Object>> getMarketChart(String coinId, int days) throws Exception {
+		if (coinId == null || coinId.equalsIgnoreCase("undefined")) {
+			throw new Exception("Invalid coinId provided");
+		}
 		
-		RestTemplate restTemplate=new RestTemplate();
+		String url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=" + days;
 		
-		try{
-			HttpHeaders headers=new HttpHeaders();
+		RestTemplate restTemplate = new RestTemplate();
+		
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 			
-			HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
+			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 			
-			ResponseEntity<String> response= restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
+			JsonNode root = objectMapper.readTree(response.getBody());
+			JsonNode prices = root.path("prices");
 			
-			return response.getBody();
+			List<Map<String, Object>> chartData = new ArrayList<>();
+			
+			for (JsonNode pricePoint : prices) {
+				long timestamp = pricePoint.get(0).asLong(); // x-axis
+				double price = pricePoint.get(1).asDouble(); // y-axis
+				
+				Map<String, Object> point = new HashMap<>();
+				point.put("x", timestamp);
+				point.put("y", price);
+				chartData.add(point);
+			}
+			
+			return chartData;
 			
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			throw new Exception(e.getMessage());
 		}
-		
 	}
+	
+	
+	
+	
 	
 	@Override
 	public String getCoinDetails(String coinId) throws Exception {

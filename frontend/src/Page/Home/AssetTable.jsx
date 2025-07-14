@@ -12,9 +12,10 @@ import { useNavigate } from "react-router-dom";
 
 const AssetTable = ({ coin, category }) => {
   const navigate = useNavigate();
+  console.log("AssetTable coin data:", coin);
 
   return (
-    <div className="max-h-[calc(100vh-150px)] overflow-y-auto">
+    <div className="max-h-[calc(98vh-150px)] overflow-y-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -28,6 +29,7 @@ const AssetTable = ({ coin, category }) => {
             <TableHead className="text-right">PRICE</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody className={""}>
           {Array.isArray(coin) &&
             coin.map((item, index) => (
@@ -38,13 +40,12 @@ const AssetTable = ({ coin, category }) => {
                 {/* <TableCell
                   onClick={() => navigate(`/market/${item.id}`)}
                   className="flex items-center gap-2 max-w-[140px] flex-col text-center"
-                >
+                  >
                   <Avatar className="-z-50">
-                    <AvatarImage src={item.image} />
+                  <AvatarImage src={item.image} />
                   </Avatar>
                   <span className="break-words text-xs">{item.name}</span>
-                </TableCell> */}
-
+                  </TableCell> */}
                 <TableCell
                   onClick={() => navigate(`/market/${item.id}`)}
                   className="p-2"

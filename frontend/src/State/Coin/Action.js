@@ -57,12 +57,10 @@ export const fetchMarketChart =
 
     try {
       const response = await api.get(`/coins/${coinId}/chart?days=${days}`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
+        headers: { Authorization: `Bearer ${jwt}` },
       });
-
       dispatch({ type: FETCH_MARKET_CHART_SUCCESS, payload: response.data });
+      console.log("Fetched chart data:", response.data); // 👈 Check shape
     } catch (error) {
       console.log("error", error);
       dispatch({ type: FETCH_MARKET_CHART_FAILURE, payload: error.message });

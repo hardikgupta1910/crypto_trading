@@ -5,5 +5,5 @@ public enum WalletTransactionType {
 	WALLET_TRANSFER,
 	ADD_MONEY,
 	BUY_ASSET,
-	sELL_ASSET
+	SELL_ASSET
 }

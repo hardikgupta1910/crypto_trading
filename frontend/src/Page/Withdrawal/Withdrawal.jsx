@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -11,8 +11,17 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { BookmarkFilledIcon, BookmarkIcon } from "@radix-ui/react-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { getWithdrawalHistory } from "@/State/Withdrawal/Action";
 
 const Withdrawal = () => {
+  const dispatch = useDispatch();
+  const { wallet, withdrawal } = useSelector((store) => store);
+
+  useEffect(() => {
+    dispatch(getWithdrawalHistory(localStorage.getItem("jwt")));
+  }, []);
+
   return (
     <div className="max-h-[calc(100vh-90px)] overflow-y-auto p-5 lg:p-20">
       <h1 className="font-bold text-3xl pb-5">Withdrawal</h1>
@@ -27,17 +36,17 @@ const Withdrawal = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 1, 1, 1, 1, 1, 1.1, 1, 1].map((item, index) => (
+          {withdrawal.history.map((item, index) => (
             <TableRow
               key={index}
               className="transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30 "
             >
               <TableCell>
-                <p>2025/06/02 at 14:15</p>
+                <p>{item.date.toString()}</p>
               </TableCell>
               <TableCell> Bank</TableCell>
-              <TableCell> 5154549</TableCell>
-              <TableCell className="text-right"> 08296</TableCell>
+              <TableCell> ${item.amount}</TableCell>
+              <TableCell className="text-right"> {item.status}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -25,8 +25,13 @@ public class WalletTransactionServiceImpl implements WalletTransactionService  {
 		return walletTransactionRepository.findById(id)
 				.orElseThrow(() -> new Exception("Transaction not found with id: " + id));
 	}
-	@Override
-	public List<WalletTransaction> getTransactionsForWallet(Wallet wallet) {
-		return walletTransactionRepository.findByWallet(wallet);
-	}
+//	@Override
+//	public List<WalletTransaction> getTransactionsForWallet(Wallet wallet) {
+//		return walletTransactionRepository.findByWallet(wallet);
+//	}
+@Override
+public List<WalletTransaction> getTransactionsForWallet(Long walletId) {
+	return walletTransactionRepository.findByWalletId(walletId);
+}
+
 }

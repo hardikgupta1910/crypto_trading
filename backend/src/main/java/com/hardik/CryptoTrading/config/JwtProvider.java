@@ -13,23 +13,41 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.aspectj.bridge.Version.getTime;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 
 public class JwtProvider {
 	
 	private static SecretKey key =  Keys.hmacShaKeyFor(JwtConstant.SECRETE_KEY.getBytes());
 	
-	public static String generateToken(Authentication auth){
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		String roles=populateAuthorities(authorities);
-		String jwt= Jwts.builder()
-				.setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + 86400000))//.setExpiration(new Date(getTime()+86400000))
-				.claim("email",auth.getName())
-				.claim("authorities", roles)
-				.signWith(key)
-				.compact();
-		return jwt;
-	}
+//	public static String generateToken(Authentication auth){
+//		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+//		String roles=populateAuthorities(authorities);
+//		String jwt= Jwts.builder()
+//				.setIssuedAt(new Date())
+//				.setExpiration(new Date(System.currentTimeMillis() + 86400000))//.setExpiration(new Date(getTime()+86400000))
+//				.claim("email",auth.getName())
+//				.claim("authorities", roles)
+////				.signWith(key)
+//				.signWith(key, SignatureAlgorithm.HS256)
+//				.compact();
+//		return jwt;
+//	}
+
+public static String generateToken(Authentication auth){
+	Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+	String roles = populateAuthorities(authorities);
+	
+	String jwt = Jwts.builder()
+			.setIssuedAt(new Date())
+			.setExpiration(new Date(System.currentTimeMillis() + 86400000))
+			.claim("email", auth.getName())
+			.claim("authorities", roles)
+			.signWith(key, SignatureAlgorithm.HS256) // ✅ Explicitly use HS256
+			.compact();
+	
+	return jwt;
+}
 	
 	
 	// by this method we can access email by proving jwt token
