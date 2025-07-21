@@ -5,6 +5,7 @@ import com.hardik.CryptoTrading.domain.OrderType;
 import com.hardik.CryptoTrading.model.*;
 import com.hardik.CryptoTrading.repository.OrderItemRepository;
 import com.hardik.CryptoTrading.repository.OrderRepository;
+import com.hardik.CryptoTrading.repository.WalletRepository;
 import com.hardik.CryptoTrading.repository.WalletService;
 import jakarta.transaction.Transactional;
 import org.apache.el.parser.AstSetData;
@@ -81,7 +82,7 @@ public class OrderServiceImpl implements  OrderService{
 		Order order=createOrder(user,orderItem,OrderType.BUY);
 		orderItem.setOrder(order);
 		
-	    walletService.payOrderPayment(order, user);
+		walletService.payOrderPayment(order, user);
 		
 		order.setStatus(OrderStatus.SUCCESS);
 		order.setOrderType(OrderType.BUY);
@@ -117,30 +118,30 @@ public class OrderServiceImpl implements  OrderService{
 			
 			OrderItem orderItem = createOrderItem(coin, quantity, buyPrice, sellPrice);
 			
-	    	Order order = createOrder(user, orderItem, OrderType.SELL);
-		    
+			Order order = createOrder(user, orderItem, OrderType.SELL);
+			
 			orderItem.setOrder(order);
-		
+			
 			if (assetToSell.getQuantity() >= quantity) {
-			
-			order.setStatus(OrderStatus.SUCCESS);
-			order.setOrderType(OrderType.BUY);
-			Order savedOrder = orderRepository.save(order);
-			
-			walletService.payOrderPayment(order, user);
-			
-			 Asset updatedAsset=assetService.updateAsset(assetToSell.getId(), -quantity);
-			
-			if (updatedAsset.getQuantity() * coin.getCurrentPrice() <= 1) {
-				assetService.deleteAsset(updatedAsset.getId());
+				
+				order.setStatus(OrderStatus.SUCCESS);
+				order.setOrderType(OrderType.BUY);
+				Order savedOrder = orderRepository.save(order);
+				
+				walletService.payOrderPayment(order, user);
+				
+				Asset updatedAsset=assetService.updateAsset(assetToSell.getId(), -quantity);
+				
+				if (updatedAsset.getQuantity() * coin.getCurrentPrice() <= 1) {
+					assetService.deleteAsset(updatedAsset.getId());
+				}
+				return savedOrder;
 			}
-			return savedOrder;
-		}
 			
 			throw new Exception("insufficient quantity");
-	}
+		}
 		throw new Exception("asset not found");
-}
+	}
 	
 	
 	@Override

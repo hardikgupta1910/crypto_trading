@@ -30,7 +30,7 @@ public class WalletTransactionController {
 	public WalletTransaction getTransactionById(@PathVariable Long id) throws Exception {
 		return walletTransactionService.getTransactionById(id);
 	}
-	
+
 //	@PostMapping("/wallet")
 //	public List<WalletTransaction> getTransactionsByWallet(@RequestBody Wallet wallet) {
 //		return walletTransactionService.getTransactionsForWallet(wallet);

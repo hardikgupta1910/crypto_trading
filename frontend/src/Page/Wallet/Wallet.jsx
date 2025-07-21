@@ -44,19 +44,20 @@ const Wallet = () => {
   const dispatch = useDispatch();
   const { wallet } = useSelector((store) => store);
 
-  useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    console.log("JWT at useEffect:", jwt);
+  // useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt");
+  //   console.log("JWT at useEffect:", jwt);
 
-    dispatch(getUserWallet(jwt)).then((res) => {
-      console.log("Fetched wallet:", res);
-      const walletId = res?.id;
+  //   dispatch(getUserWallet(jwt)).then((res) => {
+  //     console.log("Fetched wallet:", res);
+  //     const walletId = res?.id;
 
-      if (walletId) {
-        dispatch(getWalletTransactions({ jwt, walletId }));
-      }
-    });
-  }, []);
+  //     if (walletId) {
+  //       dispatch(getWalletTransactions({ jwt, walletId }));
+  //     }
+  //   });
+  // }, []);
+
   const handleFetchUserWallet = () => {
     dispatch(getUserWallet(localStorage.getItem("jwt")));
   };
@@ -81,6 +82,24 @@ const Wallet = () => {
     );
   };
 
+  useEffect(() => {
+    const fetchWalletAndTransactions = async () => {
+      const jwt = localStorage.getItem("jwt");
+      const walletRes = await dispatch(getUserWallet(jwt));
+      const walletId = walletRes?.id;
+
+      if (walletId) {
+        dispatch(getWalletTransactions({ jwt, walletId }));
+      }
+    };
+
+    fetchWalletAndTransactions();
+  }, []);
+  console.log(
+    "Wallet ID being used for transaction fetch:",
+    wallet.userWallet?.id
+  );
+
   return (
     <div className="flex flex-col items-center max-h-[600px] overflow-y-auto ">
       <div className="pt-10 w-full lg:w-[60%]">
@@ -95,6 +114,7 @@ const Wallet = () => {
                     <p className="text-gray-200 text-sm">
                       #{wallet.userWallet?.id}
                     </p>
+
                     <CopyIcon
                       size={20}
                       className="cursor-pointer hover:text-slate-300"

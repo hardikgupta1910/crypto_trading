@@ -10,7 +10,7 @@ public interface WalletTransactionService {
 	
 	WalletTransaction createTransaction(WalletTransaction transaction);
 	WalletTransaction getTransactionById(Long id) throws Exception;
-//	List<WalletTransaction> getTransactionsForWallet(Wallet wallet);
-List<WalletTransaction> getTransactionsForWallet(Long walletId);
-
+	//	List<WalletTransaction> getTransactionsForWallet(Wallet wallet);
+	List<WalletTransaction> getTransactionsForWallet(Long walletId);
+	
 }

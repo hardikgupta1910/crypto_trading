@@ -40,14 +40,23 @@ public class WalletServiceImpl implements WalletService {
 	
 	
 	
+//	@Override
+//	public Wallet addBalance(Wallet wallet, Long money) {
+//		BigDecimal balance= wallet.getBalance();
+//		BigDecimal newBalance=balance.add(BigDecimal.valueOf(money));
+//
+//		wallet.setBalance((newBalance));
+//		return walletRepository.save(wallet);
+//	}
+	
 	@Override
-	public Wallet addBalance(Wallet wallet, Long money) {
-		BigDecimal balance= wallet.getBalance();
-		BigDecimal newBalance=balance.add(BigDecimal.valueOf(money));
-		
-		wallet.setBalance((newBalance));
+	public Wallet addBalance(Wallet wallet, Long amount) {
+		BigDecimal balanceToAdd = BigDecimal.valueOf(amount);
+		wallet.setBalance(wallet.getBalance().add(balanceToAdd));
 		return walletRepository.save(wallet);
 	}
+
+
 //	public Wallet addBalance(Wallet wallet, Long amount) {
 //		if (wallet.getBalance() == null) {
 //			wallet.setBalance(BigDecimal.ZERO);

@@ -10,7 +10,7 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 
-const AssetTable = ({ coin, category }) => {
+const AssetTable = ({ coin, category, onRowClick }) => {
   const navigate = useNavigate();
   console.log("AssetTable coin data:", coin);
 
@@ -30,24 +30,19 @@ const AssetTable = ({ coin, category }) => {
           </TableRow>
         </TableHeader>
 
-        <TableBody className={""}>
+        <TableBody>
           {Array.isArray(coin) &&
-            coin.map((item, index) => (
+            coin.map((item) => (
               <TableRow
                 key={item.id}
-                className=" transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30 "
+                onClick={() => onRowClick(item.id)} // 👈 chart updates
+                className="transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30 cursor-pointer"
               >
-                {/* <TableCell
-                  onClick={() => navigate(`/market/${item.id}`)}
-                  className="flex items-center gap-2 max-w-[140px] flex-col text-center"
-                  >
-                  <Avatar className="-z-50">
-                  <AvatarImage src={item.image} />
-                  </Avatar>
-                  <span className="break-words text-xs">{item.name}</span>
-                  </TableCell> */}
                 <TableCell
-                  onClick={() => navigate(`/market/${item.id}`)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ❌ don't trigger row click
+                    navigate(`/market/${item.id}`); // ✅ open market
+                  }}
                   className="p-2"
                 >
                   <div className="flex items-center gap-2 p-2">
@@ -67,11 +62,11 @@ const AssetTable = ({ coin, category }) => {
                   </div>
                 </TableCell>
                 <TableCell>{item.symbol}</TableCell>
-                <TableCell> {item.total_volume}</TableCell>
-                <TableCell> {item.market_cap}</TableCell>
-                <TableCell> ${item.high_24h}</TableCell>
-                <TableCell> ${item.low_24h}</TableCell>
-                <TableCell> {item.price_change_percentage_24h}%</TableCell>
+                <TableCell>{item.total_volume}</TableCell>
+                <TableCell>{item.market_cap}</TableCell>
+                <TableCell>${item.high_24h}</TableCell>
+                <TableCell>${item.low_24h}</TableCell>
+                <TableCell>{item.price_change_percentage_24h}%</TableCell>
                 <TableCell className="text-right">
                   ${item.current_price}
                 </TableCell>

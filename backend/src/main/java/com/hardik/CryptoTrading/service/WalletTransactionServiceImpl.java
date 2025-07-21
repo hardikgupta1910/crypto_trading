@@ -15,6 +15,10 @@ public class WalletTransactionServiceImpl implements WalletTransactionService  {
 	@Autowired
 	private WalletTransactionRepository walletTransactionRepository;
 	
+	
+	
+	
+	
 	@Override
 	public WalletTransaction createTransaction(WalletTransaction transaction) {
 		return walletTransactionRepository.save(transaction);
@@ -25,13 +29,14 @@ public class WalletTransactionServiceImpl implements WalletTransactionService  {
 		return walletTransactionRepository.findById(id)
 				.orElseThrow(() -> new Exception("Transaction not found with id: " + id));
 	}
-//	@Override
+//		@Override
 //	public List<WalletTransaction> getTransactionsForWallet(Wallet wallet) {
 //		return walletTransactionRepository.findByWallet(wallet);
 //	}
-@Override
-public List<WalletTransaction> getTransactionsForWallet(Long walletId) {
-	return walletTransactionRepository.findByWalletId(walletId);
-}
-
+	
+	@Override
+	public List<WalletTransaction> getTransactionsForWallet(Long walletId) {
+		return walletTransactionRepository.findByWalletId(walletId);
+	}
+	
 }

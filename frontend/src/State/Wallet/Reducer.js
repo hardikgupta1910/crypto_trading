@@ -21,6 +21,8 @@ const walletReducer = (state = initialState, action) => {
       };
 
     case types.GET_WALLET_TRANSACTION_SUCCESS:
+      console.log("Transactions updated in reducer:", action.payload);
+
       return {
         ...state,
         transactions: action.payload,
