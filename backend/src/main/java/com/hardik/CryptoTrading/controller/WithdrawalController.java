@@ -4,7 +4,7 @@ import com.hardik.CryptoTrading.model.User;
 import com.hardik.CryptoTrading.model.Wallet;
 import com.hardik.CryptoTrading.model.WalletTransaction;
 import com.hardik.CryptoTrading.model.Withdrawal;
-import com.hardik.CryptoTrading.repository.WalletService;
+import com.hardik.CryptoTrading.service.WalletService;
 import com.hardik.CryptoTrading.service.UserService;
 import com.hardik.CryptoTrading.service.WithdrawalService;
 import org.hibernate.grammars.hql.HqlParser;

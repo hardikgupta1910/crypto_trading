@@ -6,7 +6,7 @@ import com.hardik.CryptoTrading.model.*;
 import com.hardik.CryptoTrading.repository.OrderItemRepository;
 import com.hardik.CryptoTrading.repository.OrderRepository;
 import com.hardik.CryptoTrading.repository.WalletRepository;
-import com.hardik.CryptoTrading.repository.WalletService;
+import com.hardik.CryptoTrading.service.WalletService;
 import jakarta.transaction.Transactional;
 import org.apache.el.parser.AstSetData;
 import org.springframework.beans.factory.annotation.Autowired;

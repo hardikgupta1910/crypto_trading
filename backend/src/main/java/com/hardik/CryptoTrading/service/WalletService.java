@@ -1,4 +1,4 @@
-package com.hardik.CryptoTrading.repository;
+package com.hardik.CryptoTrading.service;
 
 import ch.qos.logback.classic.helpers.WithLayoutListAppender;
 import com.hardik.CryptoTrading.model.Order;

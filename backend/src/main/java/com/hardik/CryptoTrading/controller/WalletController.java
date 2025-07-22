@@ -3,7 +3,7 @@ package com.hardik.CryptoTrading.controller;
 import com.hardik.CryptoTrading.model.*;
 import java.time.LocalDate;
 import com.hardik.CryptoTrading.domain.WalletTransactionType;
-import com.hardik.CryptoTrading.repository.WalletService;
+import com.hardik.CryptoTrading.service.WalletService;
 import com.hardik.CryptoTrading.response.PaymentResponse;
 import com.hardik.CryptoTrading.service.OrderService;
 import com.hardik.CryptoTrading.service.PaymentService;
@@ -12,10 +12,7 @@ import com.hardik.CryptoTrading.service.WalletTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
-
 import java.math.BigDecimal;
 
 @RestController

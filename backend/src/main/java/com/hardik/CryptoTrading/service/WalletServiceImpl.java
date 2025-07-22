@@ -5,7 +5,6 @@ import com.hardik.CryptoTrading.model.Order;
 import com.hardik.CryptoTrading.model.User;
 import com.hardik.CryptoTrading.model.Wallet;
 import com.hardik.CryptoTrading.repository.WalletRepository;
-import com.hardik.CryptoTrading.repository.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 
 @Service
-public class WalletServiceImpl implements WalletService {
+public class WalletServiceImpl implements com.hardik.CryptoTrading.service.WalletService {
 	
 	@Value("${app.use-dummy-amount}")
 	private boolean useDummyAmount;
