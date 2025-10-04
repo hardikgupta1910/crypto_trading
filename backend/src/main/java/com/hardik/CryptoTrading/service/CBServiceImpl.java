@@ -55,29 +55,29 @@ public class CBServiceImpl implements CBService {
 			//market data
 			
 			cbCoinDto.setCurrentPrice(convertToDouble(((Map<String,Object>)marketData.get("current_price")).get("usd")));
-
+			
 			cbCoinDto.setMarketCap(convertToDouble(((Map<String,Object>)marketData.get("market_cap")).get("usd")));
-
+			
 			cbCoinDto.setMarketCapRank(convertToDouble((marketData.get("market_cap_rank"))));
-
+			
 			cbCoinDto.setTotalVolume(convertToDouble(((Map<String,Object>)marketData.get("total_volume")).get("usd")));
-
+			
 			cbCoinDto.setHigh24h(convertToDouble(((Map<String,Object>)marketData.get("high_24h")).get("usd")));
-
+			
 			cbCoinDto.setLow24h(convertToDouble(((Map<String,Object>)marketData.get("low_24h")).get("usd")));
-
+			
 			cbCoinDto.setPriceChange24h(convertToDouble((marketData.get("price_change_24h"))));
-
+			
 			cbCoinDto.setPriceChangePercentage24h(convertToDouble((marketData.get("price_change_percentage_24h"))));
-
+			
 			cbCoinDto.setMarketCapChange24h(convertToDouble((marketData.get("market_cap_change_24h"))));
-
+			
 			cbCoinDto.setMarketCapChangePercentage24h(convertToDouble((marketData.get("market_cap_change_percentage_24h"))));
-
-   			cbCoinDto.setCirculatingSupply(convertToDouble((marketData.get("circulating_supply"))));
-
+			
+			cbCoinDto.setCirculatingSupply(convertToDouble((marketData.get("circulating_supply"))));
+			
 			cbCoinDto.setTotalSupply(convertToDouble((marketData.get("total_supply"))));
- 
+			
 			return cbCoinDto;
 		}
 		throw new Exception("coin not found");
@@ -112,38 +112,38 @@ public class CBServiceImpl implements CBService {
 																		.put("description",
 																				"The currency name, "+
 																						"id, symbol.")
-															        	)
-																        .put("currencyData", new JSONObject()
+																)
+																.put("currencyData", new JSONObject()
 																		.put("type", "STRING")
 																		.put("description",
 																				"Currency Data id, "+
-																				"symbol, "+
-																				"name, "+
-																				"image, "+
-																				"current_price ,"+
-																				"market_cap, "+
-																				"market_cap_rank, "+
-																				"fully_diluted_valuation,"+
-																				"total_volume, high_24h, "+
-																				"low_24h, price_change_24h, "+
-																				"price_change_percentage_24h, "+
-																				"market_cap_change_24h, "+
-																				"market_cap_change_percentage_24h, "+
-																				"circulating_supply, "+
-																				"total_supply, "+
-																				"max_supply, "+
-																				"ath, "+
-																				"ath_change_percentage, "+
-																				"ath_date, "+
-																				"atl, "+
-																				"atl_change_percentage, "+
-																				"atl_date, last_updated.")
-																		)
+																						"symbol, "+
+																						"name, "+
+																						"image, "+
+																						"current_price ,"+
+																						"market_cap, "+
+																						"market_cap_rank, "+
+																						"fully_diluted_valuation,"+
+																						"total_volume, high_24h, "+
+																						"low_24h, price_change_24h, "+
+																						"price_change_percentage_24h, "+
+																						"market_cap_change_24h, "+
+																						"market_cap_change_percentage_24h, "+
+																						"circulating_supply, "+
+																						"total_supply, "+
+																						"max_supply, "+
+																						"ath, "+
+																						"ath_change_percentage, "+
+																						"ath_date, "+
+																						"atl, "+
+																						"atl_change_percentage, "+
+																						"atl_date, last_updated.")
+																)
 														)
 														.put("required", new JSONArray()
 																.put("currencyData")
 																.put("currencyName")
-																
+														
 														)
 												)
 										)
@@ -151,7 +151,7 @@ public class CBServiceImpl implements CBService {
 						)
 				);
 		
-
+		
 		
 		try {
 			HttpHeaders headers = new HttpHeaders();
@@ -334,9 +334,9 @@ public class CBServiceImpl implements CBService {
 		
 		String requestBody=new JSONObject()
 				.put("contents", new JSONArray()
-				.put(new JSONObject()
-						.put("parts", new JSONArray()
-						.put(new JSONObject().put("text", prompt))))).toString();
+						.put(new JSONObject()
+								.put("parts", new JSONArray()
+										.put(new JSONObject().put("text", prompt))))).toString();
 		
 		HttpEntity<String> requestEntity=new HttpEntity<>(requestBody,headers);
 		

@@ -18,6 +18,8 @@ import { getUser } from "./State/Auth/Action";
 import Sidebar from "./Page/Navbar/Sidebar";
 import Navbar from "./Page/Navbar/Navbar";
 import Profile from "./Page/Profile/Profile";
+import AdminRoute from "./components/Admin/AdminRoute";
+import AdminDashboard from "./components/Admin/AdminDashboard";
 
 function App() {
   const { auth } = useSelector((store) => store);
@@ -56,6 +58,9 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<SearchCoin />} />
             <Route path="*" element={<NotFound />} />
+            <Route element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Route>
           </Routes>
         </div>
       ) : (

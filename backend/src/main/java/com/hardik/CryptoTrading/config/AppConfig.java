@@ -53,20 +53,7 @@ public class AppConfig {
 	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource(){
-//			return new CorsConfigurationSource() {
-//				@Override
-//				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-//					CorsConfiguration cfg=new CorsConfiguration();
-//					cfg.setAllowedOrigins(Arrays.asList("http://localhost:5173/signup","http://localhost:3000"));
-//
-//					cfg.setAllowedMethods(Collections.singletonList("*"));
-//					cfg.setAllowCredentials(true);
-//					cfg.setExposedHeaders(Arrays.asList("Authorization"));
-//					cfg.setAllowedHeaders(Collections.singletonList("*"));
-//					cfg.setMaxAge(3600L );
-//					return cfg;
-//				}
-//			};
+
 		
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));

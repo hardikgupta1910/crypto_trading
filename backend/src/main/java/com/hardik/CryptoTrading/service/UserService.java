@@ -3,6 +3,8 @@ package com.hardik.CryptoTrading.service;
 import com.hardik.CryptoTrading.domain.VerificationType;
 import com.hardik.CryptoTrading.model.User;
 
+import java.util.List;
+
 public interface UserService {
 	
 	public User findUserProfileByJwt(String jwt) throws Exception;
@@ -15,4 +17,5 @@ public interface UserService {
 			User user);
 	
 	User updatePassword(User user , String newPassword);
+	List<User> findAllUsers();
 }

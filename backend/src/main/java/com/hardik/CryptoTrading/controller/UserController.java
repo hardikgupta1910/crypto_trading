@@ -16,8 +16,10 @@ import com.hardik.CryptoTrading.utils.OtpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -150,6 +152,14 @@ public class UserController {
 		 }
 		 throw new Exception("wrong otp");
 		
+	}
+	// Only users with the 'ROLE_ADMIN' can access it.
+	@GetMapping("/api/admin/users")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<List<User>> getAllUsers() {
+		// You would create a method in your UserService to find all users.
+		List<User> users = userService.findAllUsers();
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
 }

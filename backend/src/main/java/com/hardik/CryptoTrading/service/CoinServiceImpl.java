@@ -1,3 +1,4 @@
+
 package com.hardik.CryptoTrading.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,10 +17,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 import java.util.List;
 import java.util.Optional;
-import java.util.List;
-import java.util.Optional;
-import java.util.Map;           // ✅ Required for Map
-import java.util.HashMap;      // ✅ Required for new HashMap<>()
+import org.springframework.cache.annotation.Cacheable;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 
 @Service
@@ -30,6 +30,8 @@ public class CoinServiceImpl implements CoinService{
 	
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	
 	
 	@Override
 	public List<Coin> getCoinList(int page) throws Exception {
@@ -50,12 +52,12 @@ public class CoinServiceImpl implements CoinService{
 			return coinList;
 			
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
-		            throw new Exception(e.getMessage());
+			throw new Exception(e.getMessage());
 		}
 		
 		
 	}
-	
+
 //	@Override
 //	public String getMarketChart(String coinId, int days) throws Exception {
 //		String url="https://api.coingecko.com/api/v3/coins/"+coinId+"/market_chart?vs_currency=usd&days="+days;
@@ -134,7 +136,7 @@ public class CoinServiceImpl implements CoinService{
 			ResponseEntity<String> response= restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
 			
 			JsonNode jsonNode=objectMapper.readTree(response.getBody());
-
+			
 			Coin coin=new Coin();
 			coin.setId(jsonNode.get("id").asText());
 			coin.setName(jsonNode.get("name").asText());
@@ -142,12 +144,12 @@ public class CoinServiceImpl implements CoinService{
 			coin.setImage(jsonNode.get("image").get("large").asText());
 //
 			JsonNode marketData=jsonNode.get("market_data");
-
+			
 			coin.setCurrentPrice(marketData.get("current_price").get("usd").asDouble());
-
+			
 			coin.setMarketCap(marketData.get("market_cap").get("usd").asLong());
 			coin.setMarketCapRank(marketData.get("market_cap_rank").asInt());
-
+			
 			coin.setTotalVolume(marketData.get("total_volume").get("usd").asLong());
 
 //			coin.setHigh24h(marketData.get("high_24").get("usd").asDouble());
@@ -254,4 +256,12 @@ public class CoinServiceImpl implements CoinService{
 			throw new Exception(e.getMessage());
 		}
 	}
+	
+	@Cacheable(value = "coinData", key = "#symbol")
+	public String getCoinData(String symbol) {
+		RestTemplate restTemplate=new RestTemplate();
+		String url = "https://api.coingecko.com/api/v3/coins/" + symbol;
+		return restTemplate.getForObject(url, String.class);
+	}
 }
+

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,5 +61,11 @@ public class UserServiceImpl implements UserService {
 	public User updatePassword(User user, String newPassword) {
 		user.setPassword(newPassword);
 		return userRepository.save(user);
+	}
+	
+	@Override
+	public List<User> findAllUsers() {
+		// This is all you need!
+		return userRepository.findAll();
 	}
 }

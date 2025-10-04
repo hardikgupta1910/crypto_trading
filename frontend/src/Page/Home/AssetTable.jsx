@@ -35,13 +35,13 @@ const AssetTable = ({ coin, category, onRowClick }) => {
             coin.map((item) => (
               <TableRow
                 key={item.id}
-                onClick={() => onRowClick(item.id)} // 👈 chart updates
+                onClick={() => onRowClick(item.id)}
                 className="transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30 cursor-pointer"
               >
                 <TableCell
                   onClick={(e) => {
-                    e.stopPropagation(); // ❌ don't trigger row click
-                    navigate(`/market/${item.id}`); // ✅ open market
+                    e.stopPropagation();
+                    navigate(`/market/${item.id}`);
                   }}
                   className="p-2"
                 >

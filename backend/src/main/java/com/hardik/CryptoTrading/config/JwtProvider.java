@@ -20,19 +20,7 @@ public class JwtProvider {
 	
 	private static SecretKey key =  Keys.hmacShaKeyFor(JwtConstant.SECRETE_KEY.getBytes());
 	
-//	public static String generateToken(Authentication auth){
-//		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-//		String roles=populateAuthorities(authorities);
-//		String jwt= Jwts.builder()
-//				.setIssuedAt(new Date())
-//				.setExpiration(new Date(System.currentTimeMillis() + 86400000))//.setExpiration(new Date(getTime()+86400000))
-//				.claim("email",auth.getName())
-//				.claim("authorities", roles)
-////				.signWith(key)
-//				.signWith(key, SignatureAlgorithm.HS256)
-//				.compact();
-//		return jwt;
-//	}
+
 
 public static String generateToken(Authentication auth){
 	Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
@@ -43,7 +31,7 @@ public static String generateToken(Authentication auth){
 			.setExpiration(new Date(System.currentTimeMillis() + 86400000))
 			.claim("email", auth.getName())
 			.claim("authorities", roles)
-			.signWith(key, SignatureAlgorithm.HS256) // ✅ Explicitly use HS256
+			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 	
 	return jwt;
@@ -64,8 +52,7 @@ public static String generateToken(Authentication auth){
 	private static String populateAuthorities(Collection<? extends GrantedAuthority> authorities) {
 		Set<String> auth=new HashSet<>();
 		for(GrantedAuthority ga: authorities){
-//			auth.add(ga.getAuthority());
-//			auth.add("ROLE_" + ga.getAuthority());
+
 			
 				String role = ga.getAuthority();
 				if (!role.startsWith("ROLE_")) {
