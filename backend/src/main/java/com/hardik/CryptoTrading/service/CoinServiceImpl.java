@@ -251,7 +251,7 @@ public class CoinServiceImpl implements CoinService{
 			ResponseEntity<String> response= restTemplate.exchange(url, HttpMethod.GET,entity,String.class);
 			
 			return response.getBody();
-			
+
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			throw new Exception(e.getMessage());
 		}

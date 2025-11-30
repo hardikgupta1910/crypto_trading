@@ -118,7 +118,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT });
 };
 
-// In Action.js
+
 
 export const RESEND_OTP_REQUEST = "RESEND_OTP_REQUEST";
 export const RESEND_OTP_SUCCESS = "RESEND_OTP_SUCCESS";
@@ -127,7 +127,7 @@ export const RESEND_OTP_FAILURE = "RESEND_OTP_FAILURE";
 export const resendOtp = (sessionId) => async (dispatch) => {
   dispatch({ type: RESEND_OTP_REQUEST });
   try {
-    const baseUrl = "http://localhost:5454"; // Your backend URL
+    const baseUrl = "http://localhost:5454"; 
     await axios.post(
       `${baseUrl}/auth/two-factor/otp/resend?sessionId=${sessionId}`
     );

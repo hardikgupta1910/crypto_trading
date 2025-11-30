@@ -274,7 +274,7 @@ const Home = () => {
 
               <div className="flex flex-col overflow-y-auto gap-4 px-4 py-4 h-full max-h-[calc(100%-4.5rem)]">
                 <div className="bg-gray-700 text-sm text-white px-4 py-2 rounded-lg max-w-[80%] self-start shadow">
-                  <p>Hi, Hardik 👋</p>
+                  <p>Hi, there 👋</p>
                   <p>You can ask any question related to crypto</p>
                   <p>like price, market cap, etc.</p>
                 </div>
