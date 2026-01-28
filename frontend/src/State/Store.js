@@ -1,17 +1,4 @@
-// // import thunk from "redux-thunk";
-// import thunk from "redux-thunk/es/index.js";
 
-// import { combineReducers, legacy_createStore, applyMiddleware } from "redux";
-// import authReducer from "./Auth/Reducer";
-// import coinReducer from "./Coin/Reducer";
-
-// const rootReducer = combineReducers({
-//   auth: authReducer,
-//   coin: coinReducer,
-// });
-
-// // export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
-// export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
 import { legacy_createStore, applyMiddleware, combineReducers } from "redux";
 import { thunk } from "redux-thunk";

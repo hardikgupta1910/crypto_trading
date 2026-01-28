@@ -18,9 +18,21 @@ import java.util.Map;
 public class CBServiceImpl implements CBService {
 	
 	
-	String GEMINI_API_KEY="AIzaSyBjQJJRPr6SiRqIaMIEPv7p7mAj_mYWLo8";
+
+private String GEMINI_API_KEY;
+	
+	{
+		GEMINI_API_KEY = System.getenv("GEMINI_API_KEY");
+		
+		if (GEMINI_API_KEY == null || GEMINI_API_KEY.isBlank()) {
+			throw new IllegalStateException("GEMINI_API_KEY is not set in environment variables");
+		}
+	}
+	
 	
 	private double convertToDouble(Object value){
+		if (value == null) return 0.0;
+		
 		if(value instanceof Integer){
 			return ((Integer)value).doubleValue();
 		} else if (value instanceof Long) {
@@ -32,58 +44,138 @@ public class CBServiceImpl implements CBService {
 		else throw new IllegalArgumentException("unsupported type"+ value.getClass().getName());
 	}
 	
-	public CBCoinDto makeAPIRequest(String currencyName) throws Exception {
-		String url="https://api.coingecko.com/api/v3/coins/"+currencyName;
+//	public CBCoinDto makeAPIRequest(String currencyName) throws Exception {
+//		String url="https://api.coingecko.com/api/v3/coins/"+currencyName;
+//
+//		RestTemplate restTemplate=new RestTemplate();
+//		HttpHeaders headers=new HttpHeaders();
+//
+//		HttpEntity<String> entity = new HttpEntity<>(headers);
+//		ResponseEntity<Map> responseEntity=restTemplate.getForEntity(url, Map.class);
+//		Map<String,Object> responseBody=responseEntity.getBody();
+//
+//		if(responseBody !=null){
+////			Map<String,Object> image=(Map<String, Object>)responseBody.get("image");
+////			Map<String,Object> marketData=(Map<String, Object>)responseBody.get("market_data");
+//
+//			if (image == null || marketData == null) {
+//				throw new Exception("Invalid CoinGecko response");
+//			}
+//
+//
+//
+//			cbCoinDto.setId((String) responseBody.get("id"));
+//			cbCoinDto.setName((String) responseBody.get("name"));
+//			cbCoinDto.setSymbol((String) responseBody.get("symbol"));
+//			cbCoinDto.setImage((String) image.getOrDefault("large", ""));
+//
+//
+//			cbCoinDto.setImage((String) image.getOrDefault("large", ""));
+//
+//
+//			CBCoinDto cbCoinDto= new CBCoinDto();
+//			cbCoinDto.setId((String)responseBody.get("id"));
+//			cbCoinDto.setName((String)responseBody.get("name"));
+//			cbCoinDto.setSymbol((String)responseBody.get("symbol"));
+//			cbCoinDto.setImage((String)image.get("large"));
+//
+//			//market data
+//
+//			cbCoinDto.setCurrentPrice(convertToDouble(((Map<String,Object>)marketData.get("current_price")).get("usd")));
+//
+//			cbCoinDto.setMarketCap(convertToDouble(((Map<String,Object>)marketData.get("market_cap")).get("usd")));
+//
+////			cbCoinDto.setMarketCapRank(convertToDouble((marketData.get("market_cap_rank"))));
+//
+//			Object rank = marketData.get("market_cap_rank");
+//			cbCoinDto.setMarketCapRank(rank == null ? 0.0 : convertToDouble(rank));
+//
+//			cbCoinDto.setTotalVolume(convertToDouble(((Map<String,Object>)marketData.get("total_volume")).get("usd")));
+//
+//			cbCoinDto.setHigh24h(convertToDouble(((Map<String,Object>)marketData.get("high_24h")).get("usd")));
+//
+//			cbCoinDto.setLow24h(convertToDouble(((Map<String,Object>)marketData.get("low_24h")).get("usd")));
+//
+//			cbCoinDto.setPriceChange24h(convertToDouble((marketData.get("price_change_24h"))));
+//
+//			cbCoinDto.setPriceChangePercentage24h(convertToDouble((marketData.get("price_change_percentage_24h"))));
+//
+//			cbCoinDto.setMarketCapChange24h(convertToDouble((marketData.get("market_cap_change_24h"))));
+//
+//			cbCoinDto.setMarketCapChangePercentage24h(convertToDouble((marketData.get("market_cap_change_percentage_24h"))));
+//
+//			cbCoinDto.setCirculatingSupply(convertToDouble((marketData.get("circulating_supply"))));
+//
+//			cbCoinDto.setTotalSupply(convertToDouble((marketData.get("total_supply"))));
+//
+//			return cbCoinDto;
+//		}
+//		throw new Exception("coin not found");
+//	}
+
+public CBCoinDto makeAPIRequest(String currencyName) throws Exception {
+	String url = "https://api.coingecko.com/api/v3/coins/" + currencyName;
+	
+	RestTemplate restTemplate = new RestTemplate();
+	ResponseEntity<Map> responseEntity = restTemplate.getForEntity(url, Map.class);
+	Map<String, Object> responseBody = responseEntity.getBody();
+	
+	if (responseBody != null) {
 		
-		RestTemplate restTemplate=new RestTemplate();
-		HttpHeaders headers=new HttpHeaders();
+		Map<String, Object> image =
+				(Map<String, Object>) responseBody.get("image");
+		Map<String, Object> marketData =
+				(Map<String, Object>) responseBody.get("market_data");
 		
-		HttpEntity<String> entity = new HttpEntity<>(headers);
-		ResponseEntity<Map> responseEntity=restTemplate.getForEntity(url, Map.class);
-		Map<String,Object> responseBody=responseEntity.getBody();
-		
-		if(responseBody !=null){
-			Map<String,Object> image=(Map<String, Object>)responseBody.get("image");
-			Map<String,Object> marketData=(Map<String, Object>)responseBody.get("market_data");
-			
-			CBCoinDto cbCoinDto= new CBCoinDto();
-			cbCoinDto.setId((String)responseBody.get("id"));
-			cbCoinDto.setName((String)responseBody.get("name"));
-			cbCoinDto.setSymbol((String)responseBody.get("symbol"));
-			cbCoinDto.setImage((String)image.get("large"));
-			
-			//market data
-			
-			cbCoinDto.setCurrentPrice(convertToDouble(((Map<String,Object>)marketData.get("current_price")).get("usd")));
-			
-			cbCoinDto.setMarketCap(convertToDouble(((Map<String,Object>)marketData.get("market_cap")).get("usd")));
-			
-			cbCoinDto.setMarketCapRank(convertToDouble((marketData.get("market_cap_rank"))));
-			
-			cbCoinDto.setTotalVolume(convertToDouble(((Map<String,Object>)marketData.get("total_volume")).get("usd")));
-			
-			cbCoinDto.setHigh24h(convertToDouble(((Map<String,Object>)marketData.get("high_24h")).get("usd")));
-			
-			cbCoinDto.setLow24h(convertToDouble(((Map<String,Object>)marketData.get("low_24h")).get("usd")));
-			
-			cbCoinDto.setPriceChange24h(convertToDouble((marketData.get("price_change_24h"))));
-			
-			cbCoinDto.setPriceChangePercentage24h(convertToDouble((marketData.get("price_change_percentage_24h"))));
-			
-			cbCoinDto.setMarketCapChange24h(convertToDouble((marketData.get("market_cap_change_24h"))));
-			
-			cbCoinDto.setMarketCapChangePercentage24h(convertToDouble((marketData.get("market_cap_change_percentage_24h"))));
-			
-			cbCoinDto.setCirculatingSupply(convertToDouble((marketData.get("circulating_supply"))));
-			
-			cbCoinDto.setTotalSupply(convertToDouble((marketData.get("total_supply"))));
-			
-			return cbCoinDto;
+		if (image == null || marketData == null) {
+			throw new Exception("Invalid CoinGecko response");
 		}
-		throw new Exception("coin not found");
+		
+		CBCoinDto cbCoinDto = new CBCoinDto();   // ✅ SINGLE declaration
+		
+		cbCoinDto.setId((String) responseBody.get("id"));
+		cbCoinDto.setName((String) responseBody.get("name"));
+		cbCoinDto.setSymbol((String) responseBody.get("symbol"));
+		cbCoinDto.setImage((String) image.getOrDefault("large", ""));
+		
+		cbCoinDto.setCurrentPrice(
+				convertToDouble(((Map<String, Object>) marketData.get("current_price")).get("usd"))
+		);
+		
+		cbCoinDto.setMarketCap(
+				convertToDouble(((Map<String, Object>) marketData.get("market_cap")).get("usd"))
+		);
+		
+		Object rank = marketData.get("market_cap_rank");
+		cbCoinDto.setMarketCapRank(rank == null ? 0.0 : convertToDouble(rank));
+		
+		cbCoinDto.setTotalVolume(
+				convertToDouble(((Map<String, Object>) marketData.get("total_volume")).get("usd"))
+		);
+		
+		cbCoinDto.setHigh24h(
+				convertToDouble(((Map<String, Object>) marketData.get("high_24h")).get("usd"))
+		);
+		
+		cbCoinDto.setLow24h(
+				convertToDouble(((Map<String, Object>) marketData.get("low_24h")).get("usd"))
+		);
+		
+		cbCoinDto.setPriceChange24h(convertToDouble(marketData.get("price_change_24h")));
+		cbCoinDto.setPriceChangePercentage24h(convertToDouble(marketData.get("price_change_percentage_24h")));
+		cbCoinDto.setMarketCapChange24h(convertToDouble(marketData.get("market_cap_change_24h")));
+		cbCoinDto.setMarketCapChangePercentage24h(convertToDouble(marketData.get("market_cap_change_percentage_24h")));
+		cbCoinDto.setCirculatingSupply(convertToDouble(marketData.get("circulating_supply")));
+		cbCoinDto.setTotalSupply(convertToDouble(marketData.get("total_supply")));
+		
+		return cbCoinDto;
 	}
 	
+	throw new Exception("coin not found");
+}
 	
+
+
 	public CBFunctionResponse getFunctionResponse(String prompt){
 		String GEMINI_API_URL="https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="+GEMINI_API_KEY;
 		
@@ -198,6 +290,7 @@ public class CBServiceImpl implements CBService {
 			errorRes.setFunctionName("not_found");
 			errorRes.setCurrencyName("not_found");
 			errorRes.setCurrencyData("not_found");
+			e.printStackTrace();
 			return errorRes;
 		}
 	}

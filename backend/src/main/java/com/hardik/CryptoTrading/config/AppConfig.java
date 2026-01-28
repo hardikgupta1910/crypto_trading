@@ -49,7 +49,8 @@ public class AppConfig {
 	}
 	
 	
-	// this will tell browser this domain/website (frontEnd) can access our domain.Any other web site then this try to access then give them cors config error instead of data
+	// this will tell browser this domain/website (frontEnd) can access our domain.Any other website then
+	// this try to access then give them cors config error instead of data
 	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource(){

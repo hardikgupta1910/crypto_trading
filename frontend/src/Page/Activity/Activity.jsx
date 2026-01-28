@@ -38,32 +38,7 @@ const Activity = () => {
             <TableHead className="text-right">Value</TableHead>
           </TableRow>
         </TableHeader>
-        {/* <TableBody>
-          {order.orders.map((item, index) => (
-            <TableRow
-              key={index}
-              className="transition-all duration-100 hover:bg-white/10 hover:backdrop-blur-md hover:ring-1 hover:ring-white/30 "
-            >
-              <TableCell>
-                <p>2025/06/02</p>
-                <p className="text-gray-400">15:02:25</p>
-              </TableCell>
-              <TableCell className="font-medium p-2">
-                <Avatar className="-z-50">
-                  <AvatarImage src={item.orderItem.buyPrice} />
-                </Avatar>
-                <span>{item.orderItem.coin.name}</span>
-              </TableCell>
-              <TableCell>${item.orderItem.coin.current_price}</TableCell>
-              <TableCell> {item.orderItem.sellPrice}</TableCell>
-              <TableCell> {item.orderType}</TableCell>
-              <TableCell className="">
-                {item.orderItem.coin.total_volume}
-              </TableCell>
-              <TableCell className="text-right">{}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody> */}
+        
         <TableBody>
           {orders?.length > 0 ? (
             orders.map((item, index) => {

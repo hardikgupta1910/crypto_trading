@@ -3,15 +3,14 @@ package com.hardik.CryptoTrading.service;
 import com.hardik.CryptoTrading.domain.OrderStatus;
 import com.hardik.CryptoTrading.domain.OrderType;
 import com.hardik.CryptoTrading.model.*;
+import org.springframework.transaction.annotation.Transactional;
 import com.hardik.CryptoTrading.repository.OrderItemRepository;
 import com.hardik.CryptoTrading.repository.OrderRepository;
 import com.hardik.CryptoTrading.repository.WalletRepository;
 import com.hardik.CryptoTrading.service.WalletService;
-import jakarta.transaction.Transactional;
 import org.apache.el.parser.AstSetData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.rmi.server.ObjID;
 import java.time.LocalDateTime;
@@ -69,8 +68,8 @@ public class OrderServiceImpl implements  OrderService{
 		return  orderItemRepository.save(orderItem);
 	}
 	
-	@Transactional
-	private Order buyAsset (Coin coin, double quantity, User user) throws Exception {
+	@Transactional (rollbackFor = Exception.class)
+	public Order buyAsset (Coin coin, double quantity, User user) throws Exception {
 		if(quantity<=0){
 			throw new Exception("quantity should be greater than zero");
 		}
@@ -102,8 +101,8 @@ public class OrderServiceImpl implements  OrderService{
 	}
 	
 	
-	@Transactional
-	private Order sellAsset (Coin coin, double quantity, User user) throws Exception {
+	@Transactional(rollbackFor = Exception.class)
+	public Order sellAsset (Coin coin, double quantity, User user) throws Exception {
 		if (quantity <= 0) {
 			throw new Exception("quantity should be greater than zero");
 		}
@@ -145,7 +144,7 @@ public class OrderServiceImpl implements  OrderService{
 	
 	
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public Order processOrder(Coin coin, double quantity, OrderType orderType, User user) throws Exception {
 		
 		if(orderType.equals(OrderType.BUY)){
