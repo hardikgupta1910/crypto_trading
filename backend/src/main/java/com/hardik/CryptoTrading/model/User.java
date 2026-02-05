@@ -20,13 +20,13 @@ public class User  implements UserDetails {
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long Id;
 	private String fullName;
+	@Column(nullable = false, unique = true)
 	private String email;
 	
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // password is write only so user fetch from client site it password is not shown
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // password is write only so user fetch from client site its password is not shown
      private String password;
 	
-	@Embedded
-	private TwoFactorAuth twoFactorAuth=new TwoFactorAuth();
+
 	
 	private USER_ROLE role= USER_ROLE.ROLE_CUSTOMER;
 	

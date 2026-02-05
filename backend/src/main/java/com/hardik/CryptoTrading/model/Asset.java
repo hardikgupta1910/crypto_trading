@@ -14,10 +14,10 @@ public class Asset {
 	private double quantity;
 	private double buyPrice;
 	
-	@ManyToOne 						//many asset may have same coin
+	@ManyToOne 						//one coin can be present in many asset
 	private Coin coin;
 	
-	@ManyToOne    // one user have may asset
+	@ManyToOne    // one user have many asset
 	private User user;
 
 }

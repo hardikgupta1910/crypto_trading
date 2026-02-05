@@ -1,13 +1,10 @@
 package com.hardik.CryptoTrading.service;
 
 import com.hardik.CryptoTrading.config.JwtProvider;
-import com.hardik.CryptoTrading.domain.VerificationType;
-import com.hardik.CryptoTrading.model.TwoFactorAuth;
 import com.hardik.CryptoTrading.model.User;
 import com.hardik.CryptoTrading.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,15 +43,7 @@ public class UserServiceImpl implements UserService {
 		return user.get();
 	}
 	
-	@Override
-	public User enableTwoFactorAuthentication(VerificationType verificationType, String sendTo, User user) {
-		TwoFactorAuth twoFactorAuth=new TwoFactorAuth();
-		twoFactorAuth.setEnabled(true);
-		twoFactorAuth.setSendTo(verificationType);
-		user.setTwoFactorAuth(twoFactorAuth);
-		
-		return userRepository.save(user);
-	}
+
 	
 	
 	@Override
